@@ -1,4 +1,5 @@
 # coding: utf-8
+require "json"
 require "./traverse"
 
 # Constructing an NFA for our RegEx implementation
@@ -131,7 +132,12 @@ module DFA
     end
 
     class State
-      property :c, :out, :out1, :lastlist
+      JSON.mapping(
+        c: {Int32, Int32},
+        out: State?,
+        out1: State?,
+        lastlist: Int32?
+      )
 
       def clone(references : Hash(UInt64, State) = Hash(UInt64, State).new)
         if references[self.object_id]?

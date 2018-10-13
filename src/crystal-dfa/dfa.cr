@@ -1,3 +1,4 @@
+require "json"
 require "./nfa"
 
 module DFA
@@ -7,7 +8,11 @@ module DFA
     alias AtomType = Tuple(Int32, Int32)
 
     struct DState
-      getter :l, :next, :accept
+      JSON.mapping(
+        accept: {type: Bool, getter: true},
+        l: {type: Array(NFA::State), getter: true},
+        next: {type: Array({AtomType, DState}), getter: true}
+      )
       @accept = false
 
       def initialize(
